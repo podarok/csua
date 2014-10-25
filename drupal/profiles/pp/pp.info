@@ -29,3 +29,6 @@ dependencies[] = fpa
 
 ; FAQ 7.x-1.x-dev
 dependencies[] = faq
+
+; Advanced Forum dev
+dependencies[] = advanced_forum
