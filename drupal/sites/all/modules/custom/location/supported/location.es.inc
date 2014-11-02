@@ -84,9 +84,9 @@ function location_map_link_es_default_providers() {
 }
 
 /**
- * Returns a lat/lon pair of the approximate center of the given postal code in the given country
+ * Returns a lat/lon pair of the approximate center of the given postal code in the given country.
  *
- * @param $location
+ * @param array $location
  *   An associative array $location where
  *     'street'       => the street portion of the location
  *     'supplemental' => additional street portion of the location
@@ -94,11 +94,10 @@ function location_map_link_es_default_providers() {
  *     'country'      => lower-cased two-letter ISO code (REQUIRED)
  *     'postal_code'  => the international postal code for this location (REQUIRED)
  *
- * @return
+ * @return array
  *   An associative array where
  *      'lat' => approximate latitude of the center of the postal code's area
  *      'lon' => approximate longitude of the center of the postal code's area
- *
  */
 function location_map_link_es_google($location = array()) {
   $query_params = array();
@@ -110,7 +109,7 @@ function location_map_link_es_google($location = array()) {
   }
 
   if (count($query_params)) {
-    return ('http://maps.google.es?q='. urlencode(implode(', ', $query_params)));
+    return ('http://maps.google.es?q=' . urlencode(implode(', ', $query_params)));
   }
   else {
     return NULL;
