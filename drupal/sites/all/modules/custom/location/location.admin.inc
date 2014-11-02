@@ -108,6 +108,20 @@ function location_admin_settings($form, &$form_state) {
       'If you have selected to open map in a new window this controls the method used to open in a new window.  target="_blank" will just work but is not XTHML Strict compliant.  rel="external" is XHTML Strict compliant but will not open in a new window unless you add some jQuery to your site to add the target attribute. If you are unsure leave set to target="_blank"'
     ),
   );
+  $form['default_distance_unit'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Default distance unit'),
+  );
+  $form['default_distance_unit']['location_default_distance_unit'] = array(
+    '#type' => 'radios',
+    '#title' => t('How distances are provided in forms'),
+    '#options' => array(
+      'select' => t('Select box'),
+      'km' => t('Kilometers only'),
+      'mile' => t('Miles only'),
+    ),
+    '#default_value' => variable_get('location_default_distance_unit', 'select'),
+  );
 
   return system_settings_form($form);
 }

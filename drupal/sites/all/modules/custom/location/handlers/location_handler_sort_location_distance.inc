@@ -13,6 +13,7 @@ class location_handler_sort_location_distance extends views_handler_sort {
    */
   public function option_definition() {
     $options = parent::option_definition();
+    $options['units'] = array('default' => 'km');
     $options['origin'] = array('default' => 'user');
     $options['latitude'] = array('default' => '');
     $options['longitude'] = array('default' => '');
@@ -37,6 +38,28 @@ class location_handler_sort_location_distance extends views_handler_sort {
    * {@inheritdoc}
    */
   public function extra_options_form(&$form, &$form_state) {
+
+    $default_distance_unit = variable_get('location_default_distance_unit', 'select');
+    if ($default_distance_unit == 'select') {
+      $form['units'] = array(
+        '#type' => 'select',
+        '#options' => array(
+          'km' => t('Kilometers'),
+          'mile' => t('Miles'),
+        ),
+        '#default_value' => $this->options['units'],
+        '#title' => t('Distance units'),
+      );
+    }
+    else {
+      $form['units'] = array(
+        '#type' => 'radio',
+        '#title' => t('Distances in: ') . ($default_distance_unit == 'km' ? t('Kilometers') : t('Miles')),
+        '#return_value' => $default_distance_unit,
+        '#value' => $default_distance_unit,
+      );
+    }
+
     $form['origin'] = array(
       '#type' => 'select',
       '#title' => t('Origin'),
