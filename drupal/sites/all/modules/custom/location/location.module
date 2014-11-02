@@ -2196,8 +2196,7 @@ function location_google_geocode_accuracy_codes() {
 }
 
 /**
- * Returns checkbox form element which allows to enable gmap location choosing
- * instead of lon/lat text fields
+ * Returns checkbox form element which allows to enable gmap location choosing instead of lon/lat text fields.
  */
 function _location_usegmap_checkbox() {
   return array(
