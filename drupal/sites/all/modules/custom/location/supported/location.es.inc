@@ -64,13 +64,55 @@ function location_province_list_es() {
 }
 
 /**
- * Returns minimum and maximum latitude and longitude needed to create a bounding box.
+ * Link providers.
  */
-function location_bounds_es() {
+function location_map_link_es_providers() {
   return array(
-    'minlng' => -18.26745,
-    'minlat' => 27.5218,
-    'maxlng' => 4.2802,
-    'maxlat' => 43.739867,
+    'google' => array(
+      'name' => 'Mapas Google',
+      'url' => 'http://maps.google.es',
+      'tos' => 'http://www.google.com/intl/es_es/help/terms_maps.html',
+    ),
   );
+}
+
+/**
+ * Default providers.
+ */
+function location_map_link_es_default_providers() {
+  return array('google');
+}
+
+/**
+ * Returns a lat/lon pair of the approximate center of the given postal code in the given country
+ *
+ * @param $location
+ *   An associative array $location where
+ *     'street'       => the street portion of the location
+ *     'supplemental' => additional street portion of the location
+ *     'province'     => the province, state, or territory
+ *     'country'      => lower-cased two-letter ISO code (REQUIRED)
+ *     'postal_code'  => the international postal code for this location (REQUIRED)
+ *
+ * @return
+ *   An associative array where
+ *      'lat' => approximate latitude of the center of the postal code's area
+ *      'lon' => approximate longitude of the center of the postal code's area
+ *
+ */
+function location_map_link_es_google($location = array()) {
+  $query_params = array();
+
+  foreach (array('street', 'city', 'postal_code', 'country') as $field) {
+    if (isset($location[$field])) {
+      $query_params[] = $location[$field];
+    }
+  }
+
+  if (count($query_params)) {
+    return ('http://maps.google.es?q='. urlencode(implode(', ', $query_params)));
+  }
+  else {
+    return NULL;
+  }
 }
