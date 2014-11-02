@@ -58,7 +58,6 @@
  */
 function theme_date_display_combination($variables) {
   static $repeating_ids = array();
-
   $entity_type = $variables['entity_type'];
   $entity      = $variables['entity'];
   $field       = $variables['field'];
@@ -77,6 +76,7 @@ function theme_date_display_combination($variables) {
   $microdata   = $variables['microdata'];
   $add_microdata = $variables['add_microdata'];
   $precision   = date_granularity_precision($field['settings']['granularity']);
+  $show_remaining_days = $variables['show_remaining_days'];
 
   $output = '';
 
@@ -151,6 +151,16 @@ function theme_date_display_combination($variables) {
     $has_time_string = FALSE;
   }
 
+  // Check remaining days
+  $show_remaining_days = '';
+  if (!empty($variables['show_remaining_days'])) {
+    $remaining_days = floor((strtotime($variables['dates']['value']['formatted_iso']) -
+    strtotime('now')) / (24 * 3600));
+    $show_remaining_days = theme('date_display_remaining', array(
+      'remaining_days' => $remaining_days,
+    ));
+  }
+
   // No date values, display nothing.
   if (empty($date1) && empty($date2)) {
     $output .= '';
@@ -167,6 +177,7 @@ function theme_date_display_combination($variables) {
       'microdata' => $microdata,
       'add_microdata' => $add_microdata,
       'dates' => $dates,
+      'show_remaining_days'=> $show_remaining_days,
     ));
   }
   // Same day, different times, don't repeat the date but show both Start and
@@ -186,6 +197,7 @@ function theme_date_display_combination($variables) {
       'microdata' => $microdata,
       'add_microdata' => $add_microdata,
       'dates' => $dates,
+      'show_remaining_days'=> $show_remaining_days,
     ));
     $replaced = str_replace($time1, $time, $date1);
     $output .= theme('date_display_single', array(
@@ -209,6 +221,7 @@ function theme_date_display_combination($variables) {
       'microdata' => $microdata,
       'add_microdata' => $add_microdata,
       'dates' => $dates,
+      'show_remaining_days'=> $show_remaining_days,
     ));
   }
 
@@ -257,6 +270,7 @@ function theme_date_display_single($variables) {
   $date = $variables['date'];
   $timezone = $variables['timezone'];
   $attributes = $variables['attributes'];
+  $show_remaining_days = $variables['show_remaining_days'];
 
   // Wrap the result with the attributes.
   $output = '<span class="date-display-single"' . drupal_attributes($attributes) . '>' . $date . $timezone . '</span>';
@@ -264,6 +278,9 @@ function theme_date_display_single($variables) {
   if (!empty($variables['add_microdata'])) {
     $output .= '<meta' . drupal_attributes($variables['microdata']['value']['#attributes']) . '/>';
   }
+
+  // Add remaining message
+  $output .= $show_remaining_days;
 
   return $output;
 }
@@ -314,6 +331,7 @@ function theme_date_display_range($variables) {
   $timezone = $variables['timezone'];
   $attributes_start = $variables['attributes_start'];
   $attributes_end = $variables['attributes_end'];
+  $show_remaining_days = $variables['show_remaining_days'];
 
   $start_date = '<span class="date-display-start"' . drupal_attributes($attributes_start) . '>' . $date1 . '</span>';
   $end_date = '<span class="date-display-end"' . drupal_attributes($attributes_end) . '>' . $date2 . $timezone . '</span>';
@@ -326,10 +344,15 @@ function theme_date_display_range($variables) {
   }
 
   // Wrap the result with the attributes.
-  return t('!start-date to !end-date', array(
+  $output = '<div class="date-display-range">' . t('!start-date to !end-date', array(
     '!start-date' => $start_date,
     '!end-date' => $end_date,
-  ));
+  )) . '</div>';
+
+  // Add remaining message
+  $output .= $show_remaining_days;
+
+  return $output;
 }
 
 /**
@@ -406,6 +429,20 @@ function theme_date_text_parts($variables) {
     $header = array(t('Date part'), t('Select list'), t('Text field'));
     return theme('table', array('header' => $header, 'rows' => $rows)) . drupal_render_children($element);
   }
+}
+
+/**
+ * Returns HTML for remaining message.
+ */
+function theme_date_display_remaining($variables) {
+  $remaining_days = $variables['remaining_days'];
+  $output = '';
+  $show_remaining_text = t('The upcoming date less then 1 day.');
+  if ($remaining_days) {
+    $show_remaining_text = t('To event remaining') . ' ' . $remaining_days . ($remaining_days == 1 ? ' day' : ' days');
+  }
+  $output = '<div class="date-display-remaining"><span class="date-display-remaining">' . $show_remaining_text . '</span></div>';
+  return $output;
 }
 
 /** @} End of addtogroup themeable */
