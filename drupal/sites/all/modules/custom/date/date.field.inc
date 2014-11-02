@@ -19,7 +19,8 @@ function date_field_formatter_info() {
         'multiple_from' => '',
         'multiple_to' => '',
         'fromto' => 'both',
-        'show_remaining_days' => false,
+        'show_remaining_days' => FALSE,
+
       ),
     ),
     'format_interval' => array(
