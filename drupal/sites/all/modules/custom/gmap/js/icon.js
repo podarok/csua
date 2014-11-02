@@ -224,11 +224,11 @@ Drupal.gmap.addHandler('gmap', function (elem) {
         }
     });
 
-    if (!obj.vars.behavior.customicons) {
-        // Provide icons to markers.
-        obj.bind('preparemarker', function (marker) {
-            marker.opts.icon = Drupal.gmap.getIcon(marker.markername, marker.offset);
-            marker.opts.shadow = Drupal.gmap.getShadow(marker.markername, marker.offset);
-        });
-    }
+    // Provide icons to markers.
+    obj.bind('preparemarker', function (marker) {
+      if (!obj.vars.behavior.customicons || (marker.markername && !marker.opts.icon)) {
+        marker.opts.icon = Drupal.gmap.getIcon(marker.markername, marker.offset);
+        marker.opts.shadow = Drupal.gmap.getShadow(marker.markername, marker.offset);
+      }
+    });
 });
