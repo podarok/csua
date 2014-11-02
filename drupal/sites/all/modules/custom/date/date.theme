@@ -279,7 +279,7 @@ function theme_date_display_single($variables) {
     $output .= '<meta' . drupal_attributes($variables['microdata']['value']['#attributes']) . '/>';
   }
 
-  // Add remaining message
+  // Add remaining message.
   $output .= $show_remaining_days;
 
   return $output;
@@ -349,7 +349,7 @@ function theme_date_display_range($variables) {
     '!end-date' => $end_date,
   )) . '</div>';
 
-  // Add remaining message
+  // Add remaining message.
   $output .= $show_remaining_days;
 
   return $output;
