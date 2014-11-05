@@ -270,6 +270,9 @@ function _date_repeat_calc($rrule, $start, $end, $exceptions, $timezone, $additi
       }
     }
     ksort($week_days);
+    // This is needed if weekly interval > 1. Otherwise if start date is the
+    // first of the days selected, the weeks are not selected correctly.
+    $day = reset($rrule['BYDAY']);
 
     // BYDAYs with parameters like -1SU (last Sun) or 2TH (second Thur)
     // need to be processed one month or year at a time.
