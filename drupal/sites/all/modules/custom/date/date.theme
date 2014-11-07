@@ -151,7 +151,7 @@ function theme_date_display_combination($variables) {
     $has_time_string = FALSE;
   }
 
-  // Check remaining days
+  // Check remaining days.
   $show_remaining_days = '';
   if (!empty($variables['show_remaining_days'])) {
     $remaining_days = floor((strtotime($variables['dates']['value']['formatted_iso']) -
@@ -177,7 +177,7 @@ function theme_date_display_combination($variables) {
       'microdata' => $microdata,
       'add_microdata' => $add_microdata,
       'dates' => $dates,
-      'show_remaining_days'=> $show_remaining_days,
+      'show_remaining_days' => $show_remaining_days,
     ));
   }
   // Same day, different times, don't repeat the date but show both Start and
@@ -197,7 +197,7 @@ function theme_date_display_combination($variables) {
       'microdata' => $microdata,
       'add_microdata' => $add_microdata,
       'dates' => $dates,
-      'show_remaining_days'=> $show_remaining_days,
+      'show_remaining_days' => $show_remaining_days,
     ));
     $replaced = str_replace($time1, $time, $date1);
     $output .= theme('date_display_single', array(
@@ -221,7 +221,7 @@ function theme_date_display_combination($variables) {
       'microdata' => $microdata,
       'add_microdata' => $add_microdata,
       'dates' => $dates,
-      'show_remaining_days'=> $show_remaining_days,
+      'show_remaining_days' => $show_remaining_days,
     ));
   }
 
