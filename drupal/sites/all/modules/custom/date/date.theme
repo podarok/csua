@@ -270,7 +270,7 @@ function theme_date_display_single($variables) {
   $date = $variables['date'];
   $timezone = $variables['timezone'];
   $attributes = $variables['attributes'];
-  $show_remaining_days = $variables['show_remaining_days'];
+  $show_remaining_days = isset($variables['show_remaining_days']) ? $variables['show_remaining_days'] : '';
 
   // Wrap the result with the attributes.
   $output = '<span class="date-display-single"' . drupal_attributes($attributes) . '>' . $date . $timezone . '</span>';
