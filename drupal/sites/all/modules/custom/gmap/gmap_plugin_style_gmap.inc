@@ -256,9 +256,16 @@ class gmap_plugin_style_gmap extends views_plugin_style {
             }
           }
           elseif ($this->options['markers'] == 'field') {
-
-            if (!empty($row->{$marker_field}) && !empty($row->{$marker_field}[0]['raw']['value'])) {
-              $markername = $row->{$marker_field}[0]['raw']['value'];
+            if (!empty($row->{$marker_field})
+              && ($marker_field_obj->field_info['type'] == 'image' || !empty($row->{$marker_field}[0]['raw']['value']))
+            ) {
+              if ($marker_field_obj->field_info['type'] == 'image') {
+                $image = $row->{$marker_field}[0]['rendered'];
+                $marker_icon = image_style_url($image['#image_style'], $image['#item']['uri']);
+              }
+              elseif (!empty($row->{$marker_field}[0]['raw']['value'])) {
+                $markername = $row->{$marker_field}[0]['raw']['value'];
+              }
             }
           }
           if (!isset($offsets[$markername])) {
@@ -289,6 +296,11 @@ class gmap_plugin_style_gmap extends views_plugin_style {
               'animation' => $this->options['animation'],
             ),
           );
+
+          if ($this->options['markers'] == 'field' && isset($marker_icon)) {
+            $marker['opts']['icon'] = $marker_icon;
+            unset($marker_icon);
+          }
 
           // RMT mode.
           if ($this->options['enablermt']) {
@@ -327,6 +339,9 @@ class gmap_plugin_style_gmap extends views_plugin_style {
           $map['latitude'] = $center_lat;
         }
 
+        if ($this->options['markers'] == 'field') {
+          $map['behavior']['customicons'] = TRUE;
+        }
         $map['markers'] = $markers;
         $output .= theme($this->theme_functions(), array(
           'view' => $this->view,
