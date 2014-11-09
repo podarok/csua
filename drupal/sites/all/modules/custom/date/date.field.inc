@@ -19,6 +19,7 @@ function date_field_formatter_info() {
         'multiple_from' => '',
         'multiple_to' => '',
         'fromto' => 'both',
+        'show_remaining_days' => FALSE,
       ),
     ),
     'format_interval' => array(
@@ -206,6 +207,7 @@ function date_field_formatter_view($entity_type, $entity, $field, $instance, $la
           $variables['item'] = $item;
           $variables['dates'] = date_formatter_process($formatter, $entity_type, $entity, $field, $instance, $langcode, $item, $display);
           $variables['attributes'] = !empty($rdf_mapping) ? rdf_rdfa_attributes($rdf_mapping, $item['value']) : array();
+          $variables['show_remaining_days'] = $display['settings']['show_remaining_days'];
           $output = theme('date_display_combination', $variables);
           if (!empty($output)) {
             $element[$delta] = array('#markup' => $output);

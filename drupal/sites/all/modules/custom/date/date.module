@@ -104,6 +104,11 @@ function date_theme() {
         'add_microdata' => NULL,
       ),
     ),
+    'date_display_remaining' => $base + array(
+      'variables' => array(
+        'remaining_days' => NULL,
+      ),
+    ),
     'date_display_combination' => $base + array(
       'variables' => array(
         'entity_type' => NULL,
