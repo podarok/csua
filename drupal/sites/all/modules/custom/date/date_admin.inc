@@ -168,7 +168,7 @@ function date_default_formatter_settings_summary($field, $instance, $view_mode) 
   }
 
   if (array_key_exists('show_remaining_days', $settings)) {
-    $summary[] = t('Show remainimg days: @value', array('@value' => ($settings['show_remaining_days'] ? 'yes' : 'no')));
+    $summary[] = t('Show remaining days: @value', array('@value' => ($settings['show_remaining_days'] ? 'yes' : 'no')));
   }
 
   return $summary;

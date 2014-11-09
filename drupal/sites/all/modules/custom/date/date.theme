@@ -77,7 +77,6 @@ function theme_date_display_combination($variables) {
   $add_microdata = $variables['add_microdata'];
   $precision   = date_granularity_precision($field['settings']['granularity']);
   $show_remaining_days = $variables['show_remaining_days'];
-
   $output = '';
 
   // If date_id is set for this field and delta doesn't match, don't display it.
@@ -279,10 +278,8 @@ function theme_date_display_single($variables) {
     $output .= '<meta' . drupal_attributes($variables['microdata']['value']['#attributes']) . '/>';
   }
 
-  // Add remaining message.
-  $output .= $show_remaining_days;
-
-  return $output;
+  // Add remaining message and return.
+  return $output . $show_remaining_days;
 }
 
 /**
@@ -349,10 +346,8 @@ function theme_date_display_range($variables) {
     '!end-date' => $end_date,
   )) . '</div>';
 
-  // Add remaining message.
-  $output .= $show_remaining_days;
-
-  return $output;
+  // Add remaining message and return.
+  return $output . $show_remaining_days;
 }
 
 /**
@@ -441,8 +436,8 @@ function theme_date_display_remaining($variables) {
   if ($remaining_days) {
     $show_remaining_text = t('To event remaining') . ' ' . $remaining_days . ($remaining_days == 1 ? ' day' : ' days');
   }
-  $output = '<div class="date-display-remaining"><span class="date-display-remaining">' . $show_remaining_text . '</span></div>';
-  return $output;
+
+  return '<div class="date-display-remaining"><span class="date-display-remaining">' . $show_remaining_text . '</span></div>';
 }
 
 /** @} End of addtogroup themeable */
