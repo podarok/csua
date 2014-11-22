@@ -52,19 +52,8 @@ function location_admin_settings($form, &$form_state) {
     ),
   );
 
-  $form['location_usegmap'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Use a Google Map to set latitude and longitude '),
-    '#default_value' => variable_get('location_usegmap', FALSE),
-    '#description' => t(
-      'If the gmap.module is installed and <a href="@enabled">enabled</a>, and this setting is also turned on, users that are allowed to manually enter latitude/longitude coordinates will be able to do so with an interactive Google Map.  You should also make sure you have entered a <a href="@google_maps_api_key">Google Maps API key</a> into your <a href="@gmap_module_settings">gmap module settings</a>.',
-      array(
-        '@enabled' => url('admin/build/modules'),
-        '@google_maps_api_key' => 'http://www.google.com/apis/maps',
-        '@gmap_module_settings' => url('admin/config/content/gmap')
-      )
-    ),
-  );
+  $form['location_usegmap'] = _location_usegmap_checkbox();
+  $form['location_usegmap']['#default_value'] = variable_get('location_usegmap', FALSE);
 
   $form['location_locpick_macro'] = array(
     '#type' => 'textfield',

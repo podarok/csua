@@ -439,7 +439,9 @@ function _location_process_location($element, $form_state) {
       ),
       '#suffix' => '</div>',
     );
-    if (function_exists('gmap_get_auto_mapid') && variable_get('location_usegmap', FALSE)) {
+
+    $local_gmap = (array_key_exists('location_usegmap', $element['location_settings']['#value'])) ? $element['location_settings']['#value']['location_usegmap'] : variable_get('location_usegmap', FALSE);
+    if (function_exists('gmap_get_auto_mapid') && $local_gmap) {
       $mapid = gmap_get_auto_mapid();
       $map = array_merge(gmap_defaults(), gmap_parse_macro(variable_get('location_locpick_macro', '[gmap]')));
       $map['id'] = $mapid;
@@ -1993,6 +1995,9 @@ function location_settings($old = FALSE) {
     '#tree' => TRUE,
   );
 
+  $form['location_usegmap'] = _location_usegmap_checkbox();
+  $form['location_usegmap']['#default_value'] = isset($old['location_usegmap']) ? $old['location_usegmap'] : FALSE;
+
   $form['multiple'] = array(
     '#type' => 'fieldset',
     '#title' => t('Number of locations'),
@@ -2194,5 +2199,23 @@ function location_google_geocode_accuracy_codes() {
     7 => t('Intersection level accuracy'),
     8 => t('Address level accuracy'),
     9 => t('Premise (building name, property name, shopping center, etc.) level accuracy'),
+  );
+}
+
+/**
+ * Returns checkbox form element which allows to enable gmap location choosing instead of lon/lat text fields.
+ */
+function _location_usegmap_checkbox() {
+  return array(
+    '#type' => 'checkbox',
+    '#title' => t('Use a Google Map to set latitude and longitude '),
+    '#description' => t(
+      'If the gmap.module is installed and <a href="@enabled">enabled</a>, and this setting is also turned on, users that are allowed to manually enter latitude/longitude coordinates will be able to do so with an interactive Google Map.  You should also make sure you have entered a <a href="@google_maps_api_key">Google Maps API key</a> into your <a href="@gmap_module_settings">gmap module settings</a>.',
+      array(
+        '@enabled' => url('admin/build/modules'),
+        '@google_maps_api_key' => 'http://www.google.com/apis/maps',
+        '@gmap_module_settings' => url('admin/config/content/gmap')
+      )
+    ),
   );
 }
